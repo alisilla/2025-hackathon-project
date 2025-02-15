@@ -1,6 +1,6 @@
 /*
 * 
-*	Program Name: Hackathon 2025 project: Team 
+*	Program Name: Hackathon 2025 project: Team boolean ring
 * 
 * 
 * 
