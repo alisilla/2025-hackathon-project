@@ -1,17 +1,4 @@
-/*
-* 
-*	Program Name: Hackathon 2025 project: Team boolean ring
-*	Group members: Jason Taylor, Alicia Brusseau, Trevys Okamura, 
-* 
-* 
-* 
-*/
-
-#include "SFML/Graphics.hpp"
-#include "SFML/Window.hpp"
-#include "SFML/System.hpp"
-#include "SFML/Audio.hpp"
-#include "SFML/System.hpp"
+#include "pietpaint.hpp"
 
 int main()
 {
