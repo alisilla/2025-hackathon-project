@@ -15,6 +15,8 @@
 #include <ctime>
 #include <iostream>
 #include <string>
+#include <thread>
+#include <chrono>
 
 const float PI = 3.14159265359f;
 const int NUM_CURVES = 15; // Number of rotated curves
@@ -35,75 +37,120 @@ sf::VertexArray generateCurve() {
         float x = randomNumber + randomNumber2 * t;
         float y = randomNumber + randomNumber2 * sin(t) * cos(0.5f * t);
         curve.append(sf::Vertex(sf::Vector2f(x, y), sf::Color(rand() % 255, rand() % 255, rand() % 255)));
+        
     }
     return curve;
 }
 
+
+std::string loadFunction() {
+    // Allow user to enter a function as a string
+    std::cout << "If you want to define the scope of variables, enter in format: 'function; bounds of variables'\n";
+    std::cout << "Enter your function: ";
+
+    std::string s;
+    std::getline(std::cin, s);  // Reads the full line, including spaces
+
+    return s;
+}
+
 int main() {
-    sf::RenderWindow outputWindow(sf::VideoMode(800, 800), "Piet Paint");
-    sf::RenderWindow inputWindow(sf::VideoMode(500, 250), "User Input");
 
-    sf::Font font;
-    if (!loadFont(font)) return -1;
+    while (true) {
 
-    sf::Text text;
-    text.setFont(font);
-    text.setCharacterSize(20);
-    text.setFillColor(sf::Color::Black);
-    text.setPosition(20, 20);
 
-    std::string input = "Enter your formula: \n";
-    sf::VertexArray curve = generateCurve();
-    bool inputWindowFocused = true;
+        // keeps letting user to enter function
+        std::string functionString = loadFunction();
 
-    std::vector<sf::RectangleShape> palette;
-    std::vector<sf::Color> colors = {
-        sf::Color::Red, sf::Color::Green, sf::Color::Blue,
-        sf::Color::Yellow, sf::Color::Magenta, sf::Color::Cyan
-    };
-    for (size_t i = 0; i < colors.size(); ++i) {
-        sf::RectangleShape colorBox(sf::Vector2f(40, 40));
-        colorBox.setFillColor(colors[i]);
-        colorBox.setPosition(750, 20 + i * 45);
-        palette.push_back(colorBox);
-    }
-
-    while (outputWindow.isOpen() || inputWindow.isOpen()) {
-        sf::Event event;
-        while (outputWindow.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                outputWindow.close();
+        if (functionString == "exit") {
+            break;  // Exit the loop if the user enters "exit"
         }
-        while (inputWindow.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                inputWindow.close();
-            text.setString(input);
-            if (event.type == sf::Event::GainedFocus) inputWindowFocused = true;
-            if (event.type == sf::Event::LostFocus) inputWindowFocused = false;
-            if (inputWindowFocused && event.type == sf::Event::TextEntered) {
-                if (event.text.unicode == '\b' && input.length() > 18) {
-                    input.pop_back();
-                }
-                else if (event.text.unicode < 128 && event.text.unicode != '\b') {
-                    input += static_cast<char>(event.text.unicode);
+
+        std::cout << "You entered: " << functionString << "\n";
+
+        // convert the string into math function and validate if the function is valid.
+
+
+
+        // store functions into a linked list
+
+        // graph the math functions in the output window.
+
+
+
+
+
+
+        sf::RenderWindow outputWindow(sf::VideoMode(800, 800), "Piet Paint");
+        sf::RenderWindow inputWindow(sf::VideoMode(500, 250), "User Input");
+
+        sf::Font font;
+        if (!loadFont(font)) return -1;
+
+        sf::Text text;
+        text.setFont(font);
+        text.setCharacterSize(20);
+        text.setFillColor(sf::Color::Black);
+        text.setPosition(20, 20);
+
+        std::string input = "Enter your formula: \n";
+        sf::VertexArray curve = generateCurve();
+        bool inputWindowFocused = true;
+
+        std::vector<sf::RectangleShape> palette;
+        std::vector<sf::Color> colors = {
+            sf::Color::Red, sf::Color::Green, sf::Color::Blue,
+            sf::Color::Yellow, sf::Color::Magenta, sf::Color::Cyan
+        };
+        for (size_t i = 0; i < colors.size(); ++i) {
+            sf::RectangleShape colorBox(sf::Vector2f(40, 40));
+            colorBox.setFillColor(colors[i]);
+            colorBox.setPosition(750, 20 + i * 45);
+            palette.push_back(colorBox);
+        }
+
+        while (outputWindow.isOpen() || inputWindow.isOpen()) {
+            sf::Event event;
+            while (outputWindow.pollEvent(event)) {
+                if (event.type == sf::Event::Closed)
+                    outputWindow.close();
+            }
+            while (inputWindow.pollEvent(event)) {
+                if (event.type == sf::Event::Closed)
+                    inputWindow.close();
+                text.setString(input);
+                if (event.type == sf::Event::GainedFocus) inputWindowFocused = true;
+                if (event.type == sf::Event::LostFocus) inputWindowFocused = false;
+                if (inputWindowFocused && event.type == sf::Event::TextEntered) {
+                    if (event.text.unicode == '\b' && input.length() > 18) {
+                        input.pop_back();
+                    }
+                    else if (event.text.unicode < 128 && event.text.unicode != '\b') {
+                        input += static_cast<char>(event.text.unicode);
+                    }
                 }
             }
-        }
-        if (outputWindow.isOpen()) {
-            outputWindow.clear(sf::Color::Black);
-            outputWindow.draw(curve);
+            if (outputWindow.isOpen()) {
+                outputWindow.clear(sf::Color::Black);
+                outputWindow.draw(curve);
 
-            //for (const auto& box : palette) {
-            //    outputWindow.draw(box);
-            //}
+                //for (const auto& box : palette) {
+                //    outputWindow.draw(box);
+                //}
 
-            outputWindow.display();
-        }
-        if (inputWindow.isOpen()) {
-            inputWindow.clear(sf::Color::White);
-            inputWindow.draw(text);
-            inputWindow.display();
+                outputWindow.display();
+            }
+            if (inputWindow.isOpen()) {
+                inputWindow.clear(sf::Color::White);
+                inputWindow.draw(text);
+                inputWindow.display();
+            }
         }
     }
+
+        
+
     return 0;
+
+    
 }
